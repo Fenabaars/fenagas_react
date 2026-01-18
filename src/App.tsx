@@ -1,27 +1,30 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Contextos (Estado global)
+// Contextos
 import { ShopProvider } from './context/ShopContext';
 import { AuthProvider } from './context/AuthContext';
 
-// Componentes Globales (Layout)
+// Componentes de Layout y Seguridad
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminLayout from './components/AdminLayout';
 
 // Páginas Públicas
 import Home from './pages/Home';
 import Productos from './pages/Productos';
 import Carrito from './pages/Carrito';
 import Login from './pages/Login';
-import Register from './pages/admin/Register';          // Migrado de crearusuario.html
-import ForgotPassword from './pages/admin/ForgotPassword'; // Migrado de olvidolacontra.html
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import Seguimiento from './pages/Seguimiento';
 import Checkout from './pages/Checkout';
 
 // Páginas Privadas (Admin)
 import AdminDashboard from './pages/AdminDashboard';
-import Stock from './pages/admin/Stock';          // Migrado de gestorstock.html
+import Stock from './pages/admin/Stock';
+import Clients from './pages/admin/Clients';
+import Settings from './pages/admin/Settings';
 
 // Estilos Globales
 import './styles/index.css';
@@ -32,7 +35,7 @@ function App() {
       <ShopProvider>
         <BrowserRouter>
           <div className="app-container">
-            {/* Navbar: Visible en toda la aplicación */}
+            {/* Navbar visible en toda la web */}
             <Navbar />
             
             <main className="main-content">
@@ -47,33 +50,26 @@ function App() {
                 <Route path="/seguimiento" element={<Seguimiento />} />
                 <Route path="/checkout" element={<Checkout />} />
 
-                {/* --- RUTAS PRIVADAS (ADMIN) --- 
-                    Protegidas por ProtectedRoute. Si no es admin, redirige a Login.
-                    Usamos sub-rutas para organizar el panel.
+                {/* --- RUTAS PROTEGIDAS (ADMIN) --- 
+                    1. Protegidas por <ProtectedRoute> (Solo Admins)
+                    2. Usan <AdminLayout> para tener el Sidebar fijo
                 */}
-                <Route 
-                  path="/admin/*" 
-                  element={
-                    <ProtectedRoute>
-                      <Routes>
-                        {/* /admin -> Muestra el Resumen General */}
-                        <Route index element={<AdminDashboard />} />
-                        
-                        {/* /admin/stock -> Muestra el Gestor de Stock */}
-                        <Route path="stock" element={<Stock />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }>
+                  {/* Estas rutas se renderizan donde está el <Outlet /> del AdminLayout */}
+                  <Route index element={<AdminDashboard />} />          {/* /admin */}
+                  <Route path="stock" element={<Stock />} />            {/* /admin/stock */}
+                  <Route path="clientes" element={<Clients />} />       {/* /admin/clientes */}
+                  <Route path="configuracion" element={<Settings />} /> {/* /admin/configuracion */}
+                </Route>
 
-                        {/* Aquí podrás añadir más rutas a futuro:
-                            <Route path="clientes" element={<Clientes />} />
-                            <Route path="configuracion" element={<Configuracion />} />
-                        */}
-                      </Routes>
-                    </ProtectedRoute>
-                  } 
-                />
               </Routes>
             </main>
 
-            {/* Footer: Visible en toda la aplicación */}
+            {/* Footer visible en toda la web */}
             <Footer />
           </div>
         </BrowserRouter>
