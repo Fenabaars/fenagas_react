@@ -1,4 +1,3 @@
-// src/context/ShopContext.tsx
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { Product, CartItem, Order } from '../types';
 import { initializeData } from '../data/seed';
@@ -22,9 +21,12 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
 
-  // Cargar datos al inicio
+  // 1. Cargar datos iniciales al montar el componente
   useEffect(() => {
+    // Inicializa datos de prueba si localStorage está vacío
     initializeData();
+
+    // Lee del localStorage
     const storedProducts = JSON.parse(localStorage.getItem('products') || '[]');
     const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
     const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -34,17 +36,20 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
     setCart(storedCart);
   }, []);
 
-  // Guardar carrito al cambiar
+  // 2. Guardar el carrito en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
+  // Funciones del Carrito
   const addToCart = (product: Product) => {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
+        // Si ya existe, aumentamos la cantidad
         return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
       }
+      // Si no existe, lo agregamos con cantidad 1
       return [...prev, { ...product, quantity: 1 }];
     });
   };
@@ -58,24 +63,29 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
     setCart(prev => prev.map(item => item.id === id ? { ...item, quantity } : item));
   };
 
+  const clearCart = () => setCart([]);
+
+  // Funciones de Pedidos
   const placeOrder = (newOrder: Order) => {
+    // 1. Agregar la orden al estado
     const updatedOrders = [...orders, newOrder];
     setOrders(updatedOrders);
     localStorage.setItem('orders', JSON.stringify(updatedOrders));
     
-    // Actualizar Stock (Lógica simple)
+    // 2. Descontar Stock de los productos
     const updatedProducts = products.map(p => {
       const itemInCart = newOrder.items.find(i => i.id === p.id);
-      if(itemInCart) return {...p, stock: p.stock - itemInCart.quantity};
+      if(itemInCart) {
+        return {...p, stock: Math.max(0, p.stock - itemInCart.quantity)};
+      }
       return p;
     });
     setProducts(updatedProducts);
     localStorage.setItem('products', JSON.stringify(updatedProducts));
     
+    // 3. Limpiar carrito
     clearCart();
   };
-  
-  const clearCart = () => setCart([]);
 
   const updateOrderStatus = (orderId: string, status: Order['status']) => {
       const updatedOrders = orders.map(o => o.id === orderId ? {...o, status} : o);
@@ -84,7 +94,17 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ShopContext.Provider value={{ products, cart, orders, addToCart, removeFromCart, updateQuantity, clearCart, placeOrder, updateOrderStatus }}>
+    <ShopContext.Provider value={{ 
+      products, 
+      cart, 
+      orders, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      clearCart, 
+      placeOrder, 
+      updateOrderStatus 
+    }}>
       {children}
     </ShopContext.Provider>
   );
