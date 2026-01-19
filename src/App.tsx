@@ -8,15 +8,15 @@ import { AuthProvider } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminLayout from './components/AdminLayout';
+import AdminLayout from './pages/AdminLayout';
 
 // Páginas Públicas
 import Home from './pages/Home';
 import Productos from './pages/Productos';
 import Carrito from './pages/Carrito';
 import Login from './pages/Login';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
+import Register from './pages/admin/Register'; 
+import ForgotPassword from './pages/admin/ForgotPassword';
 import Seguimiento from './pages/Seguimiento';
 import Checkout from './pages/Checkout';
 
