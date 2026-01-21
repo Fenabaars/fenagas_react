@@ -2,6 +2,7 @@
 import React, { useContext, useEffect } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
+import '../styles/pago.css';
 
 const Checkout = () => {
   const { cart, placeOrder } = useContext(ShopContext);

@@ -3,6 +3,7 @@ import { useContext } from 'react';
 // Asegúrate de que esta ruta de importación sea correcta según tu estructura de carpetas
 import { ShopContext } from '../../context/ShopContext';
 import { Link } from 'react-router-dom';
+import '../../styles/gestorstock.css';
 
 const Stock = () => {
   const { products } = useContext(ShopContext);
