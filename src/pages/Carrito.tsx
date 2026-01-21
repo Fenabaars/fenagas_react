@@ -1,33 +1,18 @@
 // src/pages/Carrito.tsx
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { Link, useNavigate } from 'react-router-dom';
-// import '../styles/carrito.css'; // <--- DESCOMENTAR SOLO SI CREAS EL ARCHIVO
+// import '../styles/carrito.css'; 
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, placeOrder } = useContext(ShopContext);
+  const { cart, removeFromCart, updateQuantity } = useContext(ShopContext);
   const navigate = useNavigate();
 
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
-  const handleCheckout = () => {
-    // Validación básica: no permitir pedidos vacíos
+  const handleProcessCheckout = () => {
     if (cart.length === 0) return;
-
-    const newOrder = {
-        id: `FG-${Math.floor(Math.random() * 10000)}`,
-        userId: "2", // Usuario simulado
-        customerName: "Cliente Web",
-        items: cart,
-        total: total,
-        status: 'Pendiente' as const, // <--- SOLUCIÓN: 'as const' fija el valor exacto para TypeScript
-        address: "Dirección simulada",
-        date: new Date().toLocaleDateString()
-    };
-    
-    placeOrder(newOrder);
-    alert('¡Pedido realizado con éxito!');
-    navigate('/seguimiento'); // <--- CORRECCIÓN: 'segimiento' a 'seguimiento'
+    navigate('/checkout'); // <--- AHORA REDIRIGE A LA PÁGINA DE PAGO
   };
 
   if (cart.length === 0) {
@@ -82,10 +67,10 @@ const Cart = () => {
         
         <button 
             className="btn-pagar" 
-            onClick={handleCheckout}
+            onClick={handleProcessCheckout}
             style={{ padding: '15px 30px', background: '#27ae60', color: 'white', fontSize: '1.1rem', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
         >
-            Confirmar Pedido
+            Ir a Pagar
         </button>
         <div style={{ marginTop: '15px' }}>
             <Link to="/productos" style={{ color: '#666' }}>Seguir comprando</Link>
