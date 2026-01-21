@@ -2,6 +2,7 @@
 import React, { useState, useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importar alertas
 
 const Checkout = () => {
   const { cart, clearCart } = useContext(ShopContext);
@@ -14,13 +15,25 @@ const Checkout = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulación de proceso de pago
+    // Simulación de proceso de pago (2 segundos)
     setTimeout(() => {
       setLoading(false);
       clearCart();
-      // Redirigir a una página de éxito o seguimiento
-      // En este ejemplo, vamos directo a seguimiento con un ID ficticio
-      navigate('/seguimiento?orden=FG-2024-001');
+      
+      // Alerta de Éxito
+      Swal.fire({
+        title: '¡Pago Exitoso!',
+        text: 'Tu pedido #FG-2024-001 ha sido procesado correctamente.',
+        icon: 'success',
+        confirmButtonText: 'Ver Seguimiento',
+        confirmButtonColor: '#28a745',
+        allowOutsideClick: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+            navigate('/seguimiento?orden=FG-2024-001');
+        }
+      });
+      
     }, 2000);
   };
 

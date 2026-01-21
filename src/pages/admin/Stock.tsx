@@ -1,5 +1,41 @@
 // src/pages/admin/Stock.tsx
+import Swal from 'sweetalert2'; // Importar alertas
+
 const Stock = () => {
+
+  // Función para abrir el pop-up de ajuste de stock
+  const handleAdjustStock = (productName: string, currentStock: number) => {
+    Swal.fire({
+      title: `Ajustar Stock: ${productName}`,
+      input: 'number',
+      inputLabel: 'Ingrese la nueva cantidad disponible',
+      inputValue: currentStock,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: (newStock) => {
+        // Simulamos una petición al servidor (espera de 1 segundo)
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(newStock);
+          }, 1000);
+        });
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '¡Actualizado!',
+          text: `El nuevo stock de ${productName} es: ${result.value} unidades`,
+          icon: 'success'
+        });
+        // NOTA: Aquí deberías llamar a una función para actualizar el estado real de React
+        // Por ejemplo: updateProductStock(id, result.value)
+      }
+    });
+  };
+
   return (
     <div className="container-fluid">
       <h2 className="mb-4 text-primary fw-bold">📦 Gestión de Inventario</h2>
@@ -81,7 +117,14 @@ const Stock = () => {
                             <td>40</td>
                             <td>120</td>
                             <td><span className="badge bg-success">Óptimo</span></td>
-                            <td><button className="btn btn-sm btn-outline-secondary">Ajustar</button></td>
+                            <td>
+                                <button 
+                                    className="btn btn-sm btn-outline-secondary"
+                                    onClick={() => handleAdjustStock('Gas 11kg', 80)}
+                                >
+                                    Ajustar
+                                </button>
+                            </td>
                         </tr>
                         <tr>
                             <td><strong>Gas 15kg</strong></td>
@@ -89,7 +132,14 @@ const Stock = () => {
                             <td>35</td>
                             <td>85</td>
                             <td><span className="badge bg-success">Óptimo</span></td>
-                            <td><button className="btn btn-sm btn-outline-secondary">Ajustar</button></td>
+                            <td>
+                                <button 
+                                    className="btn btn-sm btn-outline-secondary"
+                                    onClick={() => handleAdjustStock('Gas 15kg', 50)}
+                                >
+                                    Ajustar
+                                </button>
+                            </td>
                         </tr>
                         <tr>
                             <td><strong>Gas 45kg</strong></td>
@@ -97,7 +147,14 @@ const Stock = () => {
                             <td>7</td>
                             <td>12</td>
                             <td><span className="badge bg-danger">Reponer</span></td>
-                            <td><button className="btn btn-sm btn-danger">Solicitar</button></td>
+                            <td>
+                                <button 
+                                    className="btn btn-sm btn-danger"
+                                    onClick={() => handleAdjustStock('Gas 45kg', 5)}
+                                >
+                                    Solicitar
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

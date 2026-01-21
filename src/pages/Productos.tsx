@@ -1,9 +1,33 @@
 // src/pages/Productos.tsx
 import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
+import Swal from 'sweetalert2'; // 1. Importar SweetAlert
 
 const Products = () => {
     const { products, addToCart } = useContext(ShopContext);
+
+    // 2. Crear función envoltorio para agregar y mostrar alerta
+    const handleAddToCart = (product: any) => {
+        addToCart(product);
+        
+        // Configuración del "Toast"
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: `${product.name} agregado al carrito`
+        });
+    };
 
     return (
         <main className="container py-5">
@@ -41,7 +65,8 @@ const Products = () => {
                             <div className="card-footer bg-white border-top-0 pb-3">
                                 <button
                                     className={`btn w-100 ${product.stock > 0 ? 'btn-danger' : 'btn-secondary'}`}
-                                    onClick={() => addToCart(product)}
+                                    // 3. Usar nuestra nueva función aquí
+                                    onClick={() => handleAddToCart(product)} 
                                     disabled={product.stock === 0}
                                 >
                                     {product.stock > 0 ? 'Agregar al Carrito' : 'Agotado'}

@@ -2,6 +2,7 @@
 import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importar alertas
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useContext(ShopContext);
@@ -12,6 +13,31 @@ const Cart = () => {
   const handleProcessCheckout = () => {
     if (cart.length === 0) return;
     navigate('/checkout'); 
+  };
+
+  // Función con Alerta para confirmar eliminación
+  const handleRemove = (id: string) => {
+    Swal.fire({
+      title: '¿Eliminar producto?',
+      text: "Se quitará este artículo de tu carrito",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeFromCart(id);
+        Swal.fire({
+            title: 'Eliminado',
+            text: 'El producto ha sido eliminado.',
+            icon: 'success',
+            timer: 1000,
+            showConfirmButton: false
+        });
+      }
+    });
   };
 
   if (cart.length === 0) {
@@ -67,9 +93,9 @@ const Cart = () => {
                                 />
                             </div>
 
-                            {/* Eliminar */}
+                            {/* Eliminar (Ahora usa handleRemove) */}
                             <button 
-                                onClick={() => removeFromCart(item.id)}
+                                onClick={() => handleRemove(item.id)}
                                 className="btn btn-outline-danger btn-sm"
                             >
                                 🗑️

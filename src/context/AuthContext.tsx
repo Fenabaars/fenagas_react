@@ -1,11 +1,12 @@
 // src/context/AuthContext.tsx
-import { createContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useState, type ReactNode } from 'react';
 import type { User } from '../types'; 
 import { initialUsers } from '../data/seed'; 
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => boolean;
+  register: (newUser: User) => boolean; // <--- Nueva función
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -13,34 +14,55 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  // 1. Estado del usuario actual (Sesión activa)
+  const [user, setUser] = useState<User | null>(() => {
+      const storedUser = localStorage.getItem('fenagas_user');
+      return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  // Efecto para recuperar la sesión si el usuario recarga la página
-  useEffect(() => {
-    const storedUser = localStorage.getItem('fenagas_user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error("Error al recuperar sesión", error);
-        localStorage.removeItem('fenagas_user');
-      }
-    }
-  }, []);
-
+  // 2. Función Login (Mejorada)
   const login = (email: string, password: string): boolean => {
-    // Buscamos el usuario en la lista de usuarios iniciales
-    const foundUser = initialUsers.find(
+    // A) Buscar en usuarios predefinidos (seed)
+    let foundUser = initialUsers.find(
       (u) => u.email === email && u.password === password
     );
 
+    // B) Si no está en seed, buscar en localStorage (Usuarios registrados)
+    if (!foundUser) {
+        const registeredUsers: User[] = JSON.parse(localStorage.getItem('fenagas_registered_users') || '[]');
+        foundUser = registeredUsers.find(
+            (u) => u.email === email && u.password === password
+        );
+    }
+
+    // Si se encontró en alguno de los dos lados:
     if (foundUser) {
       setUser(foundUser);
-      localStorage.setItem('fenagas_user', JSON.stringify(foundUser));
+      localStorage.setItem('fenagas_user', JSON.stringify(foundUser)); // Guardar sesión
       return true;
     }
     
     return false;
+  };
+
+  // 3. Función Registro (Nueva)
+  const register = (newUser: User): boolean => {
+      // Obtener usuarios ya registrados
+      const registeredUsers: User[] = JSON.parse(localStorage.getItem('fenagas_registered_users') || '[]');
+
+      // Verificar que el correo no exista (ni en seed ni en locales)
+      const emailExists = 
+          registeredUsers.some(u => u.email === newUser.email) || 
+          initialUsers.some(u => u.email === newUser.email);
+
+      if (emailExists) {
+          return false; // El correo ya está usado
+      }
+
+      // Guardar nuevo usuario
+      const updatedUsers = [...registeredUsers, newUser];
+      localStorage.setItem('fenagas_registered_users', JSON.stringify(updatedUsers));
+      return true;
   };
 
   const logout = () => {
@@ -52,6 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider value={{ 
       user, 
       login, 
+      register, // Exportamos la función
       logout,
       isAuthenticated: !!user 
     }}>

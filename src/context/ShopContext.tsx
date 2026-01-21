@@ -15,53 +15,53 @@ interface ShopContextType {
     updateOrderStatus: (orderId: string, status: Order['status']) => void;
 }
 
-// Valores iniciales por defecto
-export const ShopContext = createContext<ShopContextType>({
-    products: [],
-    cart: [],
-    addToCart: () => {},
-    removeFromCart: () => {},
-    updateQuantity: () => {},
-    clearCart: () => {},
-    orders: [],
-    placeOrder: () => {},
-    updateOrderStatus: () => {},
-});
+export const ShopContext = createContext<ShopContextType>({} as ShopContextType);
 
 export const ShopProvider = ({ children }: { children: ReactNode }) => {
-    // Cargar productos desde localStorage o usar los iniciales
+    // 1. PRODUCTOS: Intentar leer de LocalStorage, si no, usar seed
     const [products, setProducts] = useState<Product[]>(() => {
         const stored = localStorage.getItem('products');
         return stored ? JSON.parse(stored) : initialProducts;
     });
 
-    const [cart, setCart] = useState<CartItem[]>([]);
+    // 2. CARRITO: ¡Ahora persiste al recargar!
+    const [cart, setCart] = useState<CartItem[]>(() => {
+        const stored = localStorage.getItem('cart');
+        return stored ? JSON.parse(stored) : [];
+    });
     
-    // Cargar órdenes
+    // 3. ÓRDENES: Historial de pedidos
     const [orders, setOrders] = useState<Order[]>(() => {
         const stored = localStorage.getItem('orders');
         return stored ? JSON.parse(stored) : [];
     });
 
-    // Guardar en localStorage cuando cambian productos u órdenes
+    // --- EFFECTS PARA GUARDAR EN LOCALSTORAGE ---
     useEffect(() => {
         localStorage.setItem('products', JSON.stringify(products));
     }, [products]);
 
     useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
+
+    useEffect(() => {
         localStorage.setItem('orders', JSON.stringify(orders));
     }, [orders]);
 
+    // --- FUNCIONES DEL CARRITO ---
     const addToCart = (product: Product) => {
         setCart(prev => {
             const existing = prev.find(item => item.id === product.id);
             if (existing) {
+                // Si ya existe, aumentamos cantidad
                 return prev.map(item => 
                     item.id === product.id 
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             }
+            // Si es nuevo, lo agregamos con cantidad 1
             return [...prev, { ...product, quantity: 1 }];
         });
     };
@@ -78,11 +78,12 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const clearCart = () => {
-        setCart([]);
+        setCart([]); // Al vaciar el estado, el useEffect actualizará localStorage automáticamente
     };
 
+    // --- FUNCIONES DE ÓRDENES ---
     const placeOrder = (order: Order) => {
-        setOrders(prev => [...prev, order]);
+        setOrders(prev => [order, ...prev]); // Nueva orden al principio
         clearCart();
     };
 
