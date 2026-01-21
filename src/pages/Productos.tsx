@@ -1,36 +1,52 @@
-// src/pages/Products.tsx
-import React, { useContext } from 'react';
+// src/pages/Productos.tsx
+import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
-import '../styles/producto.css'; // Asegúrate de copiar tu CSS aquí
 
 const Products = () => {
     const { products, addToCart } = useContext(ShopContext);
 
     return (
-        <main className="contenedor-productos">
-            <div className="titulo-pagina">
-                <h1>Nuestro Catálogo de Gas</h1>
-                <p>Selecciona el formato que necesitas</p>
+        <main className="container py-5">
+            <div className="text-center mb-5">
+                <h1 className="fw-bold display-5">Nuestro Catálogo de Gas</h1>
+                <p className="lead text-muted">Selecciona el formato que necesitas</p>
             </div>
 
-            <div className="grid-productos">
+            <div className="row g-4">
                 {products.map((product) => (
-                    <div key={product.id} className="tarjeta-producto">
-                        <div className="producto-foto">
-                            <img src={product.image} alt={product.name} />
-                        </div>
-                        <div className="info-producto">
-                            <h3>{product.name}</h3>
-                            <p className="descripcion">{product.description}</p>
-                            <div className="precio">${product.price.toLocaleString('es-CL')}</div>
-                            <p>Stock: {product.stock}</p>
-                            <button
-                                className="btn-comprar"
-                                onClick={() => addToCart(product)}
-                                disabled={product.stock === 0}
-                            >
-                                {product.stock > 0 ? 'Agregar al Carrito' : 'Agotado'}
-                            </button>
+                    <div key={product.id} className="col-12 col-md-6 col-lg-3">
+                        <div className="card h-100 shadow-sm border-0">
+                            <div className="card-img-top p-3 text-center bg-light">
+                                <img 
+                                    src={product.image} 
+                                    alt={product.name} 
+                                    style={{ maxHeight: '200px', objectFit: 'contain' }} 
+                                    className="img-fluid"
+                                />
+                            </div>
+                            <div className="card-body d-flex flex-column">
+                                <h5 className="card-title fw-bold">{product.name}</h5>
+                                <p className="card-text text-muted small flex-grow-1">
+                                    {product.description}
+                                </p>
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <span className="h5 mb-0 text-primary">
+                                        ${product.price.toLocaleString('es-CL')}
+                                    </span>
+                                    <small className={product.stock > 0 ? "text-success" : "text-danger"}>
+                                        {product.stock > 0 ? `Stock: ${product.stock}` : 'Sin Stock'}
+                                    </small>
+                                </div>
+                            </div>
+                            <div className="card-footer bg-white border-top-0 pb-3">
+                                <button
+                                    className={`btn w-100 ${product.stock > 0 ? 'btn-danger' : 'btn-secondary'}`}
+                                    onClick={() => addToCart(product)}
+                                    disabled={product.stock === 0}
+                                >
+                                    {product.stock > 0 ? 'Agregar al Carrito' : 'Agotado'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}

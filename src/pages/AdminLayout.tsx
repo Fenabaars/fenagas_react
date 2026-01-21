@@ -1,42 +1,57 @@
-import React, { useContext } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+// src/pages/AdminLayout.tsx
+import { useContext } from 'react';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const AdminLayout = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const isActive = (path: string) => location.pathname === path ? 'active bg-primary text-white' : 'text-white-50 hover-white';
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', minHeight: 'calc(100vh - 80px)' }}>
-      {/* --- SIDEBAR ÚNICO --- */}
-      <aside style={{ background: '#2c3e50', color: 'white', padding: '20px 0', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '0 20px 20px', borderBottom: '1px solid #34495e', marginBottom: '10px' }}>
-            <p style={{ fontSize: '0.85rem', color: '#bdc3c7', marginBottom: '5px' }}>Bienvenido,</p>
-            <strong style={{ fontSize: '1.1rem' }}>{user?.name || 'Admin'}</strong>
+    <div className="d-flex" style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
+      
+      {/* Sidebar */}
+      <aside className="bg-dark text-white p-3 d-flex flex-column" style={{ width: '280px', minHeight: '100vh', position: 'fixed', left: 0, top: 0 }}>
+        <div className="mb-4 text-center border-bottom pb-3 border-secondary">
+            <h3 className="fw-bold">Feña<span className="text-danger">Gas</span> Admin</h3>
+            <div className="small text-white-50 mt-2">
+                Hola, <strong>{user?.name || 'Administrador'}</strong>
+            </div>
         </div>
 
-        <nav style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <Link to="/admin" style={{ padding: '15px 25px', color: '#ecf0f1', textDecoration: 'none', borderBottom: '1px solid #34495e' }}>📊 Resumen</Link>
-            <Link to="/admin/stock" style={{ padding: '15px 25px', color: '#ecf0f1', textDecoration: 'none', borderBottom: '1px solid #34495e' }}>📦 Inventario</Link>
-            <Link to="/admin/clientes" style={{ padding: '15px 25px', color: '#ecf0f1', textDecoration: 'none', borderBottom: '1px solid #34495e' }}>👥 Clientes</Link>
-            <Link to="/admin/configuracion" style={{ padding: '15px 25px', color: '#ecf0f1', textDecoration: 'none', borderBottom: '1px solid #34495e' }}>⚙️ Configuración</Link>
+        <nav className="nav nav-pills flex-column flex-grow-1 gap-2">
+            <Link to="/admin" className={`nav-link ${isActive('/admin')}`}>
+                📊 Resumen General
+            </Link>
+            <Link to="/admin/stock" className={`nav-link ${isActive('/admin/stock')}`}>
+                📦 Gestión de Stock
+            </Link>
+            <Link to="/admin/clientes" className={`nav-link ${isActive('/admin/clientes')}`}>
+                👥 Clientes
+            </Link>
+            <Link to="/admin/configuracion" className={`nav-link ${isActive('/admin/configuracion')}`}>
+                ⚙️ Configuración
+            </Link>
         </nav>
 
         <button 
           onClick={handleLogout}
-          style={{ margin: '20px', padding: '10px', background: '#c0392b', border: 'none', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
+          className="btn btn-outline-danger w-100 mt-auto"
         >
           Cerrar Sesión
         </button>
       </aside>
 
-      {/* --- CONTENIDO DINÁMICO (Aquí se cargan las páginas) --- */}
-      <main style={{ background: '#f5f6fa', overflowY: 'auto' }}>
+      {/* Contenido Principal */}
+      <main className="flex-grow-1 p-4" style={{ marginLeft: '280px' }}>
         <Outlet />
       </main>
     </div>

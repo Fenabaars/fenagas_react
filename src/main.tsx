@@ -4,18 +4,21 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 
-// Importa tus estilos globales (ajusta la ruta si es necesario)
+// 1. IMPORTAR BOOTSTRAP (CSS y JS)
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+// 2. Importar tus estilos personalizados (para las variables de color y ajustes finos)
 import './styles/index.css'; 
 
-// Importa los Proveedores (Providers)
 import { ShopProvider } from './context/ShopContext';
 import { AuthProvider } from './context/AuthContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider> {/* 1. Autenticación (Login) */}
-      <ShopProvider> {/* 2. Datos del Carrito y Productos */}
-        <BrowserRouter> {/* 3. Navegación (Rutas) */}
+    <AuthProvider>
+      <ShopProvider>
+        <BrowserRouter>
           <App />
         </BrowserRouter>
       </ShopProvider>

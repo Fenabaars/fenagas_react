@@ -1,62 +1,109 @@
 // src/pages/admin/Stock.tsx
-import { useContext } from 'react';
-// Asegúrate de que esta ruta de importación sea correcta según tu estructura de carpetas
-import { ShopContext } from '../../context/ShopContext';
-import { Link } from 'react-router-dom';
-import '../../styles/gestorstock.css';
-
 const Stock = () => {
-  const { products } = useContext(ShopContext);
-
-  // ... resto del código igual, solo verifica que "products" tenga datos ...
-
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', minHeight: '100vh' }}>
-      <aside style={{ background: '#2c3e50', color: 'white', padding: '20px 0' }}>
-        <nav style={{ display: 'flex', flexDirection: 'column' }}>
-          <Link to="/admin" style={{ padding: '15px 25px', color: '#bdc3c7', textDecoration: 'none' }}>📊 Resumen</Link>
-          <Link to="/admin/stock" style={{ padding: '15px 25px', background: '#34495e', color: 'white', borderLeft: '4px solid #e67e22', textDecoration: 'none' }}>📦 Stock</Link>
-        </nav>
-      </aside>
+    <div className="container-fluid">
+      <h2 className="mb-4 text-primary fw-bold">📦 Gestión de Inventario</h2>
 
-      <main style={{ padding: '30px', background: '#f0f2f5' }}>
-        <h2 style={{ color: '#1e3a8a', marginTop: 0 }}>📦 Gestión de Inventario</h2>
-
-        {/* Tabla Detallada */}
-        <div style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-            <thead>
-              <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
-                <th style={{ padding: '12px', color: '#1e3a8a' }}>Producto</th>
-                <th style={{ padding: '12px', color: '#1e3a8a' }}>Precio</th>
-                <th style={{ padding: '12px', color: '#1e3a8a' }}>Stock</th>
-                <th style={{ padding: '12px', color: '#1e3a8a' }}>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(product => (
-                <tr key={product.id} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: '12px' }}><strong>{product.name}</strong></td>
-                  <td style={{ padding: '12px' }}>${product.price.toLocaleString('es-CL')}</td>
-                  <td style={{ padding: '12px' }}>{product.stock}</td>
-                  <td style={{ padding: '12px' }}>
-                    <span style={{
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: '0.8rem',
-                      fontWeight: 'bold',
-                      background: product.stock > 15 ? '#d4edda' : '#fff3cd',
-                      color: product.stock > 15 ? '#155724' : '#856404'
-                    }}>
-                      {product.stock > 15 ? 'Óptimo' : 'Reponer'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Tarjetas Visuales de Stock */}
+      <div className="row g-4 mb-5">
+        {/* Cilindro 11kg */}
+        <div className="col-md-4">
+            <div className="card shadow-sm border-0 h-100">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between mb-2">
+                        <h5 className="fw-bold">Cilindros 11kg</h5>
+                        <span className="text-muted">120 unid.</span>
+                    </div>
+                    <div className="progress" style={{ height: '10px' }}>
+                        <div className="progress-bar bg-warning" role="progressbar" style={{ width: '60%' }}></div>
+                    </div>
+                    <small className="text-muted mt-2 d-block">Estado: Normal</small>
+                </div>
+            </div>
         </div>
-      </main>
+
+        {/* Cilindro 15kg */}
+        <div className="col-md-4">
+            <div className="card shadow-sm border-0 h-100">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between mb-2">
+                        <h5 className="fw-bold">Cilindros 15kg</h5>
+                        <span className="text-muted">85 unid.</span>
+                    </div>
+                    <div className="progress" style={{ height: '10px' }}>
+                        <div className="progress-bar bg-primary" role="progressbar" style={{ width: '45%' }}></div>
+                    </div>
+                    <small className="text-muted mt-2 d-block">Estado: Normal</small>
+                </div>
+            </div>
+        </div>
+
+        {/* Cilindro 45kg (Crítico) */}
+        <div className="col-md-4">
+            <div className="card shadow-sm border-0 h-100 border-bottom border-3 border-danger">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between mb-2">
+                        <h5 className="fw-bold">Cilindros 45kg</h5>
+                        <span className="text-danger fw-bold">12 unid.</span>
+                    </div>
+                    <div className="progress" style={{ height: '10px' }}>
+                        <div className="progress-bar bg-danger" role="progressbar" style={{ width: '15%' }}></div>
+                    </div>
+                    <small className="text-danger mt-2 d-block fw-bold">⚠️ STOCK CRÍTICO</small>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      {/* Tabla de Detalle */}
+      <div className="card shadow-sm border-0">
+          <div className="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+              <h5 className="mb-0 fw-bold">Detalle de Bodega</h5>
+              <button className="btn btn-success btn-sm">+ Registrar Entrada</button>
+          </div>
+          <div className="card-body p-0">
+            <div className="table-responsive">
+                <table className="table table-hover align-middle mb-0">
+                    <thead className="table-light">
+                        <tr>
+                            <th>Tipo de Gas</th>
+                            <th>En Bodega</th>
+                            <th>En Ruta</th>
+                            <th>Total Real</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Gas 11kg</strong></td>
+                            <td>80</td>
+                            <td>40</td>
+                            <td>120</td>
+                            <td><span className="badge bg-success">Óptimo</span></td>
+                            <td><button className="btn btn-sm btn-outline-secondary">Ajustar</button></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gas 15kg</strong></td>
+                            <td>50</td>
+                            <td>35</td>
+                            <td>85</td>
+                            <td><span className="badge bg-success">Óptimo</span></td>
+                            <td><button className="btn btn-sm btn-outline-secondary">Ajustar</button></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gas 45kg</strong></td>
+                            <td>5</td>
+                            <td>7</td>
+                            <td>12</td>
+                            <td><span className="badge bg-danger">Reponer</span></td>
+                            <td><button className="btn btn-sm btn-danger">Solicitar</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+      </div>
     </div>
   );
 };

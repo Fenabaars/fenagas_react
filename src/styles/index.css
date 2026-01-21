@@ -1,0 +1,63 @@
+/* src/styles/index.css */
+:root {
+    --azul-seguridad: #1e3a8a;
+    --naranja-llama: #b10101;
+    --rojo-emergencia: #9c5503;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Ajuste para la barra de alerta superior */
+.alert-bar {
+    background-color: var(--rojo-emergencia);
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* Estilos del Hero (Bootstrap no tiene hero con imagen de fondo por defecto) */
+.hero-section {
+    /* Asegúrate de que la imagen esté en la carpeta public/img/ */
+    background: linear-gradient(rgba(94, 94, 94, 0.5), rgba(114, 113, 113, 0.6)), 
+                url('/img/perrosgas.webp');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.text-naranja {
+    color: var(--naranja-llama) !important;
+}
+
+.bg-azul {
+    background-color: var(--azul-seguridad) !important;
+}
+
+.btn-naranja {
+    background-color: var(--naranja-llama);
+    color: white;
+    border: none;
+}
+.btn-naranja:hover {
+    background-color: #8a0101;
+    color: white;
+}
+
+/* Tarjetas de servicios con borde superior de color */
+.service-card {
+    border-top: 5px solid var(--naranja-llama);
+    transition: transform 0.3s;
+}
+.service-card:hover {
+    transform: translateY(-5px);
+}

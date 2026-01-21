@@ -1,50 +1,71 @@
 // src/App.tsx
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+
+// Componentes Globales
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
+// Páginas Públicas (Tienda)
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Productos from './pages/Productos'; // Asegúrate que el archivo se llame Productos.tsx
+import Register from './pages/Register';         // Nuevo
+import ForgotPassword from './pages/ForgotPassword'; // Nuevo
+import Productos from './pages/Productos';
 import Carrito from './pages/Carrito';
 import Checkout from './pages/Checkout';
 import Seguimiento from './pages/Seguimiento';
 
-// Rutas Admin
+// Páginas Privadas (Admin)
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminLayout from './pages/AdminLayout'; // Si tienes un layout para admin
+import AdminLayout from './pages/AdminLayout';
 import AdminDashboard from './pages/AdminDashboard';
-import Stock from './pages/admin/Stock';
-// Importa aquí Clients o Settings si los tienes creados
+import Stock from './pages/admin/Stock';         // Nuevo
+import Clients from './pages/admin/Clients';     // Nuevo
+import Settings from './pages/admin/Settings';   // Nuevo
 
 function App() {
+  const location = useLocation();
+  
+  // Ocultar Navbar y Footer si estamos en una ruta de admin
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
-    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar />
+    <div className="app-container d-flex flex-column min-vh-100">
       
-      <div style={{ flex: 1 }}>
+      {/* Solo mostramos el Navbar si NO estamos en admin */}
+      {!isAdminRoute && <Navbar />}
+      
+      <div className="flex-grow-1">
         <Routes>
-          {/* Rutas Públicas */}
+          {/* --- RUTAS PÚBLICAS --- */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Register />} />
+          <Route path="/recuperar-clave" element={<ForgotPassword />} />
           <Route path="/productos" element={<Productos />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/seguimiento" element={<Seguimiento />} />
 
-          {/* Rutas Privadas (Admin) */}
+          {/* --- RUTAS PROTEGIDAS (ADMIN) --- */}
           <Route path="/admin" element={
             <ProtectedRoute>
               <AdminLayout />
             </ProtectedRoute>
           }>
+             {/* El 'index' es lo que se ve al entrar a /admin */}
              <Route index element={<AdminDashboard />} />
+             
+             {/* Sub-rutas: /admin/stock, /admin/clientes, etc. */}
              <Route path="stock" element={<Stock />} />
-             {/* <Route path="clientes" element={<Clients />} /> */}
+             <Route path="clientes" element={<Clients />} />
+             <Route path="configuracion" element={<Settings />} />
           </Route>
         </Routes>
       </div>
 
-      <Footer />
+      {/* Solo mostramos el Footer si NO estamos en admin */}
+      {!isAdminRoute && <Footer />}
     </div>
   );
 }

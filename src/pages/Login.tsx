@@ -1,7 +1,7 @@
+// src/pages/Login.tsx
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/sesionusuario.css'; // Asegúrate de tener este CSS o usa estilos inline
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +16,6 @@ const Login = () => {
     const success = login(email, password);
     
     if (success) {
-      // Redirigir según el rol
       if (email.includes('admin')) {
         navigate('/admin');
       } else {
@@ -28,57 +27,58 @@ const Login = () => {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '80vh',
-      background: `linear-gradient(rgba(26, 42, 58, 0.8), rgba(26, 42, 58, 0.8)), url('/img/iniciosecionimg.jpg')`,
-      backgroundSize: 'cover'
-    }}>
-      <div className="login-card" style={{ background: 'white', padding: '40px', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)', width: '100%', maxWidth: '400px', textAlign: 'center' }}>
-        <div className="logo-login" style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1a2a3a', marginBottom: '20px' }}>
-          Feña<span style={{ color: '#f39c12' }}>Gas</span>
-        </div>
-        <h2>Bienvenido</h2>
-        <p style={{ color: '#666', marginBottom: '30px' }}>Accede para gestionar tus compras</p>
+    <div className="d-flex align-items-center justify-content-center min-vh-100" 
+         style={{ 
+             background: `linear-gradient(rgba(26, 42, 58, 0.8), rgba(26, 42, 58, 0.8)), url('/img/iniciosecionimg.jpg')`,
+             backgroundSize: 'cover',
+             backgroundPosition: 'center'
+         }}>
+         
+      <div className="card shadow-lg border-0 p-4" style={{ maxWidth: '400px', width: '100%' }}>
+        <div className="card-body text-center">
+            <h2 className="mb-4 fw-bold text-dark">
+                Feña<span className="text-warning">Gas</span>
+            </h2>
+            <h4 className="mb-3">Bienvenido</h4>
+            <p className="text-muted mb-4">Accede para gestionar tus compras</p>
 
-        {error && <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>}
+            {error && <div className="alert alert-danger py-2">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <div className="input-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
-            <label htmlFor="email" style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Correo Electrónico</label>
-            <input 
-              type="email" 
-              id="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@fenagas.cl" 
-              required 
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
-            />
-          </div>
+            <form onSubmit={handleSubmit} className="text-start">
+            <div className="mb-3">
+                <label className="form-label fw-bold">Correo Electrónico</label>
+                <input 
+                type="email" 
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@fenagas.cl" 
+                required 
+                />
+            </div>
 
-          <div className="input-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
-            <label htmlFor="password" style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Contraseña</label>
-            <input 
-              type="password" 
-              id="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••" 
-              required 
-              style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '6px' }}
-            />
-          </div>
+            <div className="mb-4">
+                <label className="form-label fw-bold">Contraseña</label>
+                <input 
+                type="password" 
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••" 
+                required 
+                />
+            </div>
 
-          <button type="submit" className="btn-login" style={{ width: '100%', padding: '12px', background: '#f39c12', border: 'none', color: 'white', fontWeight: 'bold', borderRadius: '6px', cursor: 'pointer' }}>
-            Iniciar Sesión
-          </button>
-        </form>
+            <button type="submit" className="btn btn-warning w-100 text-white fw-bold mb-3">
+                Iniciar Sesión
+            </button>
+            </form>
 
-        <div className="links" style={{ marginTop: '20px', fontSize: '0.85rem' }}>
-          <Link to="/" className="btn-regresar" style={{ color: '#803a3a', textDecoration: 'none' }}>← Volver al inicio</Link>
+            <div className="mt-3">
+            <Link to="/" className="text-decoration-none text-secondary">
+                ← Volver al inicio
+            </Link>
+            </div>
         </div>
       </div>
     </div>

@@ -2,7 +2,6 @@
 import { useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { Link, useNavigate } from 'react-router-dom';
-// import '../styles/carrito.css'; 
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useContext(ShopContext);
@@ -12,70 +11,103 @@ const Cart = () => {
 
   const handleProcessCheckout = () => {
     if (cart.length === 0) return;
-    navigate('/checkout'); // <--- AHORA REDIRIGE A LA PÁGINA DE PAGO
+    navigate('/checkout'); 
   };
 
   if (cart.length === 0) {
     return (
-        <div style={{ padding: '50px', textAlign: 'center' }}>
-            <h2>Tu carrito está vacío</h2>
-            <Link to="/productos" className="btn-principal" style={{ marginTop: '20px', display: 'inline-block', color: 'blue' }}>
-                Ir a comprar
-            </Link>
+        <div className="container py-5 text-center">
+            <div className="py-5">
+                <h2 className="display-6 mb-4">Tu carrito está vacío 🛒</h2>
+                <Link to="/productos" className="btn btn-primary btn-lg">
+                    Ir a comprar
+                </Link>
+            </div>
         </div>
     );
   }
 
   return (
-    <main className="carrito-container" style={{ padding: '20px' }}>
-      <section className="items-carrito">
-        <h2 style={{ color: '#1e3a8a' }}>Tu Pedido</h2>
-        
-        {cart.map(item => (
-            <div className="item" key={item.id} style={{ display: 'flex', gap: '20px', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '20px' }}>
-                <img src={item.image} alt={item.name} style={{ width: '100px', objectFit: 'cover' }} />
-                <div className="item-info" style={{ flex: 1 }}>
-                    <h4>{item.name}</h4>
-                    <p>Precio: ${item.price.toLocaleString('es-CL')}</p>
-                    <button 
-                        onClick={() => removeFromCart(item.id)}
-                        style={{ color: 'red', background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}
-                    >
-                        Eliminar
-                    </button>
-                </div>
-                <div className="item-controles">
-                    <input 
-                        type="number" 
-                        value={item.quantity} 
-                        min="1" 
-                        max="10" 
-                        onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
-                        style={{ padding: '5px', width: '60px' }}
-                    />
+    <main className="container py-5">
+      <h2 className="mb-4 fw-bold text-primary">Tu Pedido</h2>
+      
+      <div className="row g-5">
+        {/* Columna Izquierda: Lista de items */}
+        <div className="col-lg-8">
+            <div className="card shadow-sm border-0">
+                <div className="card-body p-0">
+                    {cart.map((item, index) => (
+                        <div key={item.id} className={`d-flex align-items-center p-3 ${index !== cart.length -1 ? 'border-bottom' : ''}`}>
+                            {/* Imagen */}
+                            <img 
+                                src={item.image} 
+                                alt={item.name} 
+                                className="rounded"
+                                style={{ width: '80px', height: '80px', objectFit: 'cover' }} 
+                            />
+                            
+                            {/* Info */}
+                            <div className="ms-3 flex-grow-1">
+                                <h5 className="mb-1">{item.name}</h5>
+                                <p className="mb-0 text-muted">
+                                    Precio: <span className="fw-bold text-dark">${item.price.toLocaleString('es-CL')}</span>
+                                </p>
+                            </div>
+
+                            {/* Controles Cantidad */}
+                            <div className="me-4">
+                                <input 
+                                    type="number" 
+                                    className="form-control"
+                                    value={item.quantity} 
+                                    min="1" 
+                                    max="10" 
+                                    onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                                    style={{ width: '70px' }}
+                                />
+                            </div>
+
+                            {/* Eliminar */}
+                            <button 
+                                onClick={() => removeFromCart(item.id)}
+                                className="btn btn-outline-danger btn-sm"
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </div>
-        ))}
-      </section>
+        </div>
 
-      <section className="resumen-pedido" style={{ marginTop: '40px', borderTop: '2px solid #ddd', paddingTop: '20px', textAlign: 'right' }}>
-        <h3>Resumen</h3>
-        <div className="resumen-linea total-grande" style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
-            <span>Total: </span>
-            <span>${total.toLocaleString('es-CL')}</span>
+        {/* Columna Derecha: Resumen */}
+        <div className="col-lg-4">
+            <div className="card shadow-sm border-0 bg-light">
+                <div className="card-body p-4">
+                    <h4 className="card-title mb-4">Resumen</h4>
+                    <div className="d-flex justify-content-between mb-3">
+                        <span>Subtotal</span>
+                        <span>${total.toLocaleString('es-CL')}</span>
+                    </div>
+                    <div className="d-flex justify-content-between mb-4 border-top pt-3">
+                        <span className="h4 fw-bold">Total</span>
+                        <span className="h4 fw-bold text-success">${total.toLocaleString('es-CL')}</span>
+                    </div>
+                    
+                    <button 
+                        className="btn btn-success w-100 btn-lg mb-3" 
+                        onClick={handleProcessCheckout}
+                    >
+                        Ir a Pagar
+                    </button>
+                    
+                    <Link to="/productos" className="d-block text-center text-decoration-none text-muted">
+                        Seguir comprando
+                    </Link>
+                </div>
+            </div>
         </div>
-        
-        <button 
-            className="btn-pagar" 
-            onClick={handleProcessCheckout}
-            style={{ padding: '15px 30px', background: '#27ae60', color: 'white', fontSize: '1.1rem', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-        >
-            Ir a Pagar
-        </button>
-        <div style={{ marginTop: '15px' }}>
-            <Link to="/productos" style={{ color: '#666' }}>Seguir comprando</Link>
-        </div>
-      </section>
+      </div>
     </main>
   );
 };

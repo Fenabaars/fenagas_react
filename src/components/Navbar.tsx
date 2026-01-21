@@ -1,35 +1,58 @@
 // src/components/Navbar.tsx
 import { Link } from 'react-router-dom';
-import '../styles/index.css'; // Asegúrate de que este CSS tenga tus estilos de navegación
 
 const Navbar = () => {
   return (
-    <header className="header-principal">
+    <>
+      {/* Barra de Alerta Superior */}
       <div className="alert-bar">
-        🚨 Emergencia 24/7: 📞 <strong>555-900-FeñaGAS</strong>
+        🚨 ¿Huele a gas? Cierre la llave y llame ahora: <strong>555-900-FeñaGAS</strong>
       </div>
-      
-      <nav className="navbar">
-        <div className="logo">
-            {/* Si tienes un logo de imagen, úsalo aquí, si no, texto */}
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                🔥 FeñaGas
-            </Link>
+
+      {/* Navbar Bootstrap */}
+      <nav className="navbar navbar-expand-lg navbar-dark bg-azul sticky-top">
+        <div className="container">
+          <Link className="navbar-brand fw-bold fs-3" to="/">
+            Feña<span className="text-naranja">Gas</span>
+          </Link>
+
+          {/* Botón Hamburguesa para móviles */}
+          <button 
+            className="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto align-items-center">
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/">Inicio</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/productos">Productos</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/carrito">Carrito</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-white" to="/seguimiento">Seguimiento</Link>
+              </li>
+              <li className="nav-item ms-lg-3 mt-2 mt-lg-0">
+                <Link to="/login" className="btn btn-naranja btn-sm px-3 rounded-1">
+                  Iniciar Sesión
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-        
-        <ul className="nav-links">
-          <li><Link to="/">Inicio</Link></li>
-          <li><Link to="/productos">Producto</Link></li>
-          <li><Link to="/carrito">Carrito</Link></li>
-          <li>
-            {/* Aquí está el cambio del link para que se vea como el botón de la carpeta */}
-            <Link to="/login" className="btn-login">
-                Iniciar Sección
-            </Link>
-          </li>
-        </ul>
       </nav>
-    </header>
+    </>
   );
 };
 
