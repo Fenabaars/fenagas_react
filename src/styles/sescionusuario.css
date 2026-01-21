@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Fondo con temática de gas sutil */
+    background: linear-gradient(rgba(26, 42, 58, 0.8), rgba(26, 42, 58, 0.8)), 
+                url('iniciosecionimg.jpg');
+    background-size: cover;
+}
+
+/* Contenedor del Login */
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgb(4, 19, 231);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-card h2 {
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.login-card p {
+    color: #39017c;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+.logo-login {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1a2a3a;
+    margin-bottom: 20px;
+}
+
+.logo-login span {
+    color: #f39c12;
+}
+
+/* Formulario */
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #f39c12;
+}
+
+/* Botón */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: #f39c12;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-login:hover {
+    background: #e67e22;
+}
+
+/* Enlaces */
+.links {
+    margin-top: 20px;
+    font-size: 0.85rem;
+}
+
+.links a {
+    color: #58039d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.btn-regresar {
+    display: inline-block;
+    margin-top: 20px;
+    color: #803a3a;
+    text-decoration: none;
+    font-size: 0.8rem;
+}

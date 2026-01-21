@@ -1,0 +1,218 @@
+:root {
+    --azul-seguridad: #1e3a8a;
+    --naranja-llama: #b10101;
+    --rojo-emergencia: #9c5503;
+    --exito: #27ae60;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.alerta {
+    background: var(--rojo-emergencia);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+header {
+    background: var(--azul-seguridad);
+    color: white;
+    padding: 1rem 5%;
+    text-align: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo span {
+    color: var(--naranja-llama);
+}
+
+/* Contenedor de Confirmación */
+.confirmacion-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.mensaje-exito {
+    color: var(--azul-seguridad);
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.perro-repartidor {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.btn-siguiente {
+    background: var(--naranja-llama);
+    color: white;
+    text-decoration: none;
+    padding: 15px 60px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(177, 1, 1, 0.3);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-siguiente:hover {
+    transform: scale(1.05);
+    background: #d40202;
+}
+
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.8rem;
+}
+
+/* Estilos Base */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+/* Colores de marca */
+:root {
+    --azul-seguridad: #1e3a8a;
+    --naranja-llama: #b10101;
+    --rojo-emergencia: #9c5503;
+}
+
+/* Barra de Navegación */
+header {
+    background: var(--azul-seguridad);
+    color: white;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo span {
+    color: var(--naranja-llama);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 0.9rem;
+}
+
+/* Sección Principal (Hero) */
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('perrosgas.webp');
+    background-size: cover;
+    background-position: center;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.btn-principal {
+    background: var(--naranja-llama);
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Contenedor de Servicios */
+.servicios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 50px 10%;
+}
+
+.tarjeta {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid var(--naranja-llama);
+    text-align: center;
+}
+
+.tarjeta h3 {
+    color: var(--azul-seguridad);
+}
+
+/* Alerta de Emergencia */
+.alerta {
+    background: var(--rojo-emergencia);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
