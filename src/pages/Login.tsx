@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/sescionusuario.css'; // Asegúrate de tener este CSS o usa estilos inline
+import '../styles/sesionusuario.css'; // Asegúrate de tener este CSS o usa estilos inline
 
 const Login = () => {
   const [email, setEmail] = useState('');

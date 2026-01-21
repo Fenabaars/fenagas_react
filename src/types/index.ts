@@ -1,34 +1,37 @@
 // src/types/index.ts
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: 'admin' | 'client';
-  password?: string; // Solo para validación, no guardar en texto plano en producción real
-}
-
 export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  category: string;
-  stock: number;
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    image: string;
+    category: string; // Nuevo campo obligatorio
+    stock: number;    // Nuevo campo obligatorio
 }
 
 export interface CartItem extends Product {
-  quantity: number;
+    quantity: number;
 }
 
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    password?: string;
+    role: 'admin' | 'client'; // Rol estricto
+}
+
+// Definimos los estados posibles para evitar errores de texto
+export type OrderStatus = 'Pendiente' | 'En Camino' | 'Entregado';
+
 export interface Order {
-  id: string;
-  userId: string;
-  customerName: string;
-  items: CartItem[];
-  total: number;
-  status: 'Pendiente' | 'En Camino' | 'Entregado';
-  address: string;
-  date: string;
+    id: string;
+    userId: string;
+    customerName: string;
+    items: CartItem[]; // La orden guarda items con cantidad (CartItem), no solo Products
+    total: number;
+    status: OrderStatus;
+    address: string;
+    date: string;
 }
