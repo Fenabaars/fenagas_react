@@ -1,5 +1,5 @@
 // src/data/seed.ts
-import { Product, User, Order } from '../types';
+import type { Product, User, Order } from '../types';
 
 export const initialProducts: Product[] = [
   {
@@ -7,7 +7,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 11kg',
     price: 15500,
     description: 'Cilindro de gas licuado de 11kg, ideal para estufas y cocinas.',
-    image: '/img/perrosgas.webp', // Asegúrate que esta ruta coincida con tu carpeta public
+    image: '/img/perrosgas.webp',
     category: 'Gas',
     stock: 100
   },
@@ -46,29 +46,28 @@ export const initialUsers: User[] = [
     name: 'Administrador',
     email: 'admin@fenagas.cl',
     password: 'admin',
-    role: 'admin' as const // 'as const' es CRÍTICO aquí para evitar errores de tipo
+    role: 'admin' as const // <--- IMPORTANTE: 'as const' evita el error de tipo
   },
   {
     id: '2',
     name: 'Juan Pérez',
     email: 'cliente@gmail.com',
     password: '123',
-    role: 'client' as const
+    role: 'client' as const // <--- IMPORTANTE
   }
 ];
 
 export const initializeData = () => {
-  // Solo inicializa si no existen datos previos para no borrar avances
   if (!localStorage.getItem('products')) {
     localStorage.setItem('products', JSON.stringify(initialProducts));
   }
-  
+
   if (!localStorage.getItem('users')) {
     localStorage.setItem('users', JSON.stringify(initialUsers));
   }
 
-  // Inicializar órdenes vacías si no existen
   if (!localStorage.getItem('orders')) {
+    // Inicializamos con un array vacío pero tipado correctamente
     const emptyOrders: Order[] = [];
     localStorage.setItem('orders', JSON.stringify(emptyOrders));
   }

@@ -1,6 +1,6 @@
 // src/context/ShopContext.tsx
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { Product, CartItem, Order } from '../types';
+import type { Product, CartItem, Order } from '../types';
 import { initialProducts, initialUsers } from '../data/seed';
 
 interface ShopContextType {

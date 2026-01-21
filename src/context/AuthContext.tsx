@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types'; // Asegúrate de que esta ruta sea correcta
+import React, { createContext, useState, useEffect, useContext, ReactNode} from 'react';
+import type { User } from '../types'; // Asegúrate de que esta ruta sea correcta
 import { initialUsers } from '../data/seed'; // Importamos los usuarios de prueba
 
 interface AuthContextType {
