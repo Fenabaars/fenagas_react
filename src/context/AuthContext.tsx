@@ -1,6 +1,7 @@
-import React, { createContext, useState, useEffect, useContext, ReactNode} from 'react';
-import type { User } from '../types'; // Asegúrate de que esta ruta sea correcta
-import { initialUsers } from '../data/seed'; // Importamos los usuarios de prueba
+// src/context/AuthContext.tsx
+import { createContext, useState, useEffect, type ReactNode } from 'react';
+import type { User } from '../types'; 
+import { initialUsers } from '../data/seed'; 
 
 interface AuthContextType {
   user: User | null;
@@ -28,14 +29,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = (email: string, password: string): boolean => {
-    // Buscamos el usuario en la lista de usuarios iniciales (seed.ts)
+    // Buscamos el usuario en la lista de usuarios iniciales
     const foundUser = initialUsers.find(
       (u) => u.email === email && u.password === password
     );
 
     if (foundUser) {
       setUser(foundUser);
-      // Guardamos en localStorage para persistencia
       localStorage.setItem('fenagas_user', JSON.stringify(foundUser));
       return true;
     }

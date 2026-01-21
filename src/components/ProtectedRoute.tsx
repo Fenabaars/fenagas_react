@@ -1,9 +1,10 @@
+// src/components/ProtectedRoute.tsx
 import { Navigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, type ReactNode } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 interface ProtectedRouteProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
@@ -14,7 +15,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  // ReactNode puede ser null, string, etc., pero React lo renderiza bien
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

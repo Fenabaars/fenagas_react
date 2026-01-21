@@ -1,7 +1,7 @@
 // src/context/ShopContext.tsx
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, type ReactNode } from 'react';
 import type { Product, CartItem, Order } from '../types';
-import { initialProducts, initialUsers } from '../data/seed';
+import { initialProducts } from '../data/seed';
 
 interface ShopContextType {
     products: Product[];
@@ -84,8 +84,6 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
     const placeOrder = (order: Order) => {
         setOrders(prev => [...prev, order]);
         clearCart();
-        
-        // (Opcional) Aquí podrías descontar stock de los productos si quisieras
     };
 
     const updateOrderStatus = (orderId: string, status: Order['status']) => {
