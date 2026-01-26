@@ -14,7 +14,8 @@ import Productos from './pages/Productos';
 import Carrito from './pages/Carrito';
 import Checkout from './pages/Checkout';
 import Seguimiento from './pages/Seguimiento';
-import ClientOrders from './pages/ClientOrders'; // <--- NUEVO IMPORT
+import ClientOrders from './pages/ClientOrders'; 
+import Profile from './pages/Profile'; // <--- IMPORTACIÓN NUEVA
 
 // Páginas Privadas (Admin)
 import ProtectedRoute from './components/ProtectedRoute';
@@ -23,18 +24,18 @@ import AdminDashboard from './pages/AdminDashboard';
 import Stock from './pages/admin/Stock';
 import Clients from './pages/admin/Clients';
 import Settings from './pages/admin/Settings';
-import AdminOrders from './pages/admin/Orders'; // <--- NUEVO IMPORT (Asegúrate de haber creado este archivo)
+import AdminOrders from './pages/admin/Orders';
 
 function App() {
   const location = useLocation();
   
-  // Ocultar Navbar y Footer si estamos en una ruta de admin
+  // Ocultar Navbar y Footer si estamos en una ruta de admin para evitar duplicados
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <div className="app-container d-flex flex-column min-vh-100">
       
-      {/* Solo mostramos el Navbar si NO estamos en admin */}
+      {/* Solo mostramos el Navbar público si NO estamos en el panel de admin */}
       {!isAdminRoute && <Navbar />}
       
       <div className="flex-grow-1">
@@ -49,8 +50,9 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/seguimiento" element={<Seguimiento />} />
           
-          {/* Nueva ruta para que el cliente vea sus pedidos */}
+          {/* --- RUTAS DE CLIENTE --- */}
           <Route path="/mis-pedidos" element={<ClientOrders />} />
+          <Route path="/perfil" element={<Profile />} /> {/* <--- RUTA NUEVA */}
 
           {/* --- RUTAS PROTEGIDAS (ADMIN) --- */}
           <Route path="/admin" element={
@@ -58,11 +60,11 @@ function App() {
               <AdminLayout />
             </ProtectedRoute>
           }>
-             {/* El 'index' es lo que se ve al entrar a /admin */}
+             {/* Dashboard Principal */}
              <Route index element={<AdminDashboard />} />
              
              {/* Sub-rutas de gestión */}
-             <Route path="pedidos" element={<AdminOrders />} /> {/* <--- NUEVA RUTA ADMIN */}
+             <Route path="pedidos" element={<AdminOrders />} />
              <Route path="stock" element={<Stock />} />
              <Route path="clientes" element={<Clients />} />
              <Route path="configuracion" element={<Settings />} />
@@ -70,7 +72,7 @@ function App() {
         </Routes>
       </div>
 
-      {/* Solo mostramos el Footer si NO estamos en admin */}
+      {/* Solo mostramos el Footer público si NO estamos en admin */}
       {!isAdminRoute && <Footer />}
     </div>
   );
