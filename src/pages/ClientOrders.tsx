@@ -17,7 +17,7 @@ const ClientOrders = () => {
 
             {myOrders.length === 0 ? (
                 <div className="alert alert-info">
-                    Aún no has realizado ningún pedido. 
+                    Aún no has realizado ningún pedido.
                     <Link to="/productos" className="ms-2 fw-bold">Ir a la tienda</Link>
                 </div>
             ) : (
@@ -30,10 +30,9 @@ const ClientOrders = () => {
                                         <span className="fw-bold text-primary me-3">Orden #{order.id}</span>
                                         <span className="text-muted small">{order.date}</span>
                                     </div>
-                                    <span className={`badge ${
-                                        order.status === 'Entregado' ? 'bg-success' : 
-                                        order.status === 'En Camino' ? 'bg-info' : 'bg-warning text-dark'
-                                    }`}>
+                                    <span className={`badge ${order.status === 'Entregado' ? 'bg-success' :
+                                            order.status === 'En Camino' ? 'bg-info' : 'bg-warning text-dark'
+                                        }`}>
                                         {order.status}
                                     </span>
                                 </div>
@@ -52,7 +51,7 @@ const ClientOrders = () => {
                                         </div>
                                         <div className="col-md-4 border-start">
                                             <p className="mb-1"><strong>Total:</strong> ${order.total.toLocaleString('es-CL')}</p>
-                                            
+
                                             {/* MOSTRAR CHOFER ASIGNADO */}
                                             <p className="mb-1">
                                                 <strong>Chofer:</strong> {order.driver ? (
@@ -63,7 +62,7 @@ const ClientOrders = () => {
                                             </p>
 
                                             <p className="mb-1"><strong>Despacho:</strong> {order.address}, {order.commune}</p>
-                                            
+
                                             <div className="mt-3">
                                                 <Link to={`/seguimiento?orden=${order.id}`} className="btn btn-outline-primary btn-sm w-100">
                                                     Rastrear Envío

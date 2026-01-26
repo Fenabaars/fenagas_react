@@ -26,18 +26,18 @@ export interface User {
 
 export type OrderStatus = 'Pendiente' | 'En Camino' | 'Entregado' | 'Cancelado';
 
-// ACTUALIZADO: Agregamos phone y commune
+// IMPORTANTE: Aquí agregamos 'driver', 'commune', 'phone' y 'paymentMethod'
 export interface Order {
     id: string;
-    userId: string; // Si es invitado será "guest"
+    userId: string;
     customerName: string;
     items: CartItem[];
     total: number;
     status: OrderStatus;
     address: string;
-    commune: string; // Nuevo
-    phone: string;   // Nuevo
+    commune: string;      // <--- Asegúrate de tener esto
+    phone: string;        // <--- Asegúrate de tener esto
     date: string;
-    paymentMethod: string; // Nuevo (para saber si paga con efectivo o tarjeta)
-    driver?: string;
+    paymentMethod: string; // <--- Asegúrate de tener esto
+    driver?: string;       // <--- ESTE ES EL QUE FALTA SEGURO
 }

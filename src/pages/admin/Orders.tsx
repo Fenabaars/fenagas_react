@@ -41,7 +41,7 @@ const AdminOrders = () => {
     };
 
     const getStatusColor = (status: string) => {
-        switch(status) {
+        switch (status) {
             case 'Pendiente': return 'bg-warning text-dark';
             case 'En Camino': return 'bg-info text-white';
             case 'Entregado': return 'bg-success';
@@ -80,10 +80,10 @@ const AdminOrders = () => {
                                             <td className="small">
                                                 {order.address}, {order.commune}
                                             </td>
-                                            
+
                                             {/* SELECCIÓN DE CHOFER */}
                                             <td>
-                                                <select 
+                                                <select
                                                     className="form-select form-select-sm"
                                                     value={order.driver || ""}
                                                     onChange={(e) => handleAssignDriver(order.id, e.target.value)}
@@ -101,10 +101,10 @@ const AdminOrders = () => {
                                                     {order.status}
                                                 </span>
                                             </td>
-                                            
+
                                             {/* CAMBIO DE ESTADO */}
                                             <td>
-                                                <select 
+                                                <select
                                                     className="form-select form-select-sm"
                                                     value={order.status}
                                                     onChange={(e) => handleChangeStatus(order.id, e.target.value)}
