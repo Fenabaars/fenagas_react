@@ -39,4 +39,5 @@ export interface Order {
     phone: string;   // Nuevo
     date: string;
     paymentMethod: string; // Nuevo (para saber si paga con efectivo o tarjeta)
+    driver?: string;
 }

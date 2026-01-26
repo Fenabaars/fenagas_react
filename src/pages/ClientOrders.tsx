@@ -52,8 +52,17 @@ const ClientOrders = () => {
                                         </div>
                                         <div className="col-md-4 border-start">
                                             <p className="mb-1"><strong>Total:</strong> ${order.total.toLocaleString('es-CL')}</p>
+                                            
+                                            {/* MOSTRAR CHOFER ASIGNADO */}
+                                            <p className="mb-1">
+                                                <strong>Chofer:</strong> {order.driver ? (
+                                                    <span className="badge bg-secondary ms-1">🚚 {order.driver}</span>
+                                                ) : (
+                                                    <span className="text-muted fst-italic ms-1">Por asignar...</span>
+                                                )}
+                                            </p>
+
                                             <p className="mb-1"><strong>Despacho:</strong> {order.address}, {order.commune}</p>
-                                            <p className="mb-0"><strong>Pago:</strong> {order.paymentMethod === 'credit' ? 'Tarjeta' : 'Efectivo/Transf.'}</p>
                                             
                                             <div className="mt-3">
                                                 <Link to={`/seguimiento?orden=${order.id}`} className="btn btn-outline-primary btn-sm w-100">
