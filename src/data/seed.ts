@@ -7,7 +7,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 11kg',
     price: 15500,
     description: 'Cilindro de gas licuado de 11kg, ideal para estufas y cocinas.',
-    image: "/img/gas11.jpg",
+    image: "/img/gas11.jpg", // <--- CAMBIO REALIZADO
     category: 'Gas',
     stock: 100
   },
@@ -16,7 +16,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 15kg',
     price: 21200,
     description: 'Cilindro de gas licuado de 15kg, mayor duración para tu hogar.',
-    image: '/img/gas15.jpg',
+    image: '/img/gas15.jpg', // <--- CAMBIO REALIZADO
     category: 'Gas',
     stock: 80
   },
@@ -25,7 +25,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 45kg',
     price: 65800,
     description: 'Cilindro de 45kg para alto consumo y calefacción central.',
-    image: '/img/gas45.jpg',
+    image: '/img/gas45.jpg', // <--- CAMBIO REALIZADO
     category: 'Gas',
     stock: 20
   },
@@ -34,7 +34,7 @@ export const initialProducts: Product[] = [
     name: 'Gas Catalítico',
     price: 22500,
     description: 'Carga especial para estufas catalíticas.',
-    image: '/img/perrosgas.webp',
+    image: '/img/perrosgas.webp', // Este lo mantenemos igual
     category: 'Gas',
     stock: 50
   }
@@ -46,14 +46,14 @@ export const initialUsers: User[] = [
     name: 'Administrador',
     email: 'admin@fenagas.cl',
     password: 'admin',
-    role: 'admin' as const // <--- IMPORTANTE: 'as const' evita el error de tipo
+    role: 'admin' as const
   },
   {
     id: '2',
     name: 'Juan Pérez',
     email: 'cliente@gmail.com',
     password: '123',
-    role: 'client' as const // <--- IMPORTANTE
+    role: 'client' as const
   }
 ];
 
@@ -67,7 +67,6 @@ export const initializeData = () => {
   }
 
   if (!localStorage.getItem('orders')) {
-    // Inicializamos con un array vacío pero tipado correctamente
     const emptyOrders: Order[] = [];
     localStorage.setItem('orders', JSON.stringify(emptyOrders));
   }
