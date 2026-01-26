@@ -7,7 +7,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 11kg',
     price: 15500,
     description: 'Cilindro de gas licuado de 11kg, ideal para estufas y cocinas.',
-    image: '/img/perrosgas.webp',
+    image: "/img/gas11.jpg",
     category: 'Gas',
     stock: 100
   },
@@ -16,7 +16,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 15kg',
     price: 21200,
     description: 'Cilindro de gas licuado de 15kg, mayor duración para tu hogar.',
-    image: '/img/perrosgas.webp',
+    image: '/img/gas15.jpg',
     category: 'Gas',
     stock: 80
   },
@@ -25,7 +25,7 @@ export const initialProducts: Product[] = [
     name: 'Cilindro 45kg',
     price: 65800,
     description: 'Cilindro de 45kg para alto consumo y calefacción central.',
-    image: '/img/perrosgas.webp',
+    image: '/img/gas45.jpg',
     category: 'Gas',
     stock: 20
   },
