@@ -106,7 +106,6 @@ const Navbar = () => {
                         {/* Opciones Generales del Cliente */}
                         <li><Link className="dropdown-item" to="/perfil">👤 Ver Perfil</Link></li>
                         <li><Link className="dropdown-item" to="/mis-pedidos">📦 Mis Pedidos</Link></li>
-                        <li><Link className="dropdown-item" to="/configuracion">⚙️ Configuración</Link></li>
                         
                         <li><hr className="dropdown-divider" /></li>
                         
