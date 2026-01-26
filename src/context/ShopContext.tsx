@@ -13,41 +13,42 @@ interface ShopContextType {
     orders: Order[];
     placeOrder: (order: Order) => void;
     updateOrderStatus: (orderId: string, status: Order['status']) => void;
-    assignDriver: (orderId: string, driverName: string) => void; // <--- NUEVA FUNCIÓN
+    assignDriver: (orderId: string, driverName: string) => void;
 }
 
 export const ShopContext = createContext<ShopContextType>({} as ShopContextType);
 
 export const ShopProvider = ({ children }: { children: ReactNode }) => {
-    // 1. Cargar Productos
+    // 1. Cargar Productos (CAMBIO AQUÍ: Usamos una clave nueva 'fenagas_products')
     const [products, setProducts] = useState<Product[]>(() => {
-        const stored = localStorage.getItem('products');
+        // Al cambiar el nombre de la clave, ignoramos la basura vieja y cargamos lo nuevo
+        const stored = localStorage.getItem('fenagas_products');
         return stored ? JSON.parse(stored) : initialProducts;
     });
 
     // 2. Cargar Carrito
     const [cart, setCart] = useState<CartItem[]>(() => {
-        const stored = localStorage.getItem('cart');
+        const stored = localStorage.getItem('fenagas_cart'); // También actualicé esto por consistencia
         return stored ? JSON.parse(stored) : [];
     });
     
     // 3. Cargar Órdenes
     const [orders, setOrders] = useState<Order[]>(() => {
-        const stored = localStorage.getItem('orders');
+        const stored = localStorage.getItem('fenagas_orders'); // Y esto
         return stored ? JSON.parse(stored) : [];
     });
 
-    // --- Efectos de Persistencia ---
+    // --- Efectos de Persistencia (Guardar con las nuevas claves) ---
     useEffect(() => {
-        localStorage.setItem('products', JSON.stringify(products));
+        localStorage.setItem('fenagas_products', JSON.stringify(products));
     }, [products]);
 
     useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('fenagas_cart', JSON.stringify(cart));
     }, [cart]);
 
     useEffect(() => {
-        localStorage.setItem('orders', JSON.stringify(orders));
+        localStorage.setItem('fenagas_orders', JSON.stringify(orders));
     }, [orders]);
 
     // --- Funciones del Carrito ---
@@ -86,7 +87,6 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         ));
     };
 
-    // NUEVA FUNCIÓN: Asignar Chofer
     const assignDriver = (orderId: string, driverName: string) => {
         setOrders(prev => prev.map(o => 
             o.id === orderId ? { ...o, driver: driverName } : o
@@ -104,7 +104,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
             orders, 
             placeOrder, 
             updateOrderStatus, 
-            assignDriver // Exportamos la nueva función
+            assignDriver 
         }}>
             {children}
         </ShopContext.Provider>
