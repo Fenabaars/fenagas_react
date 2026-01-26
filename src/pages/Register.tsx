@@ -7,9 +7,9 @@ import type { User } from '../types';
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useContext(AuthContext); // Usamos la función del contexto
+  const { register } = useContext(AuthContext); // Usamos la función register del contexto
 
-  // Estados para los campos del formulario
+  // Estado del formulario incluyendo los nuevos campos
   const [formData, setFormData] = useState({
       name: '',
       rut: '',
@@ -19,7 +19,7 @@ const Register = () => {
       phone: ''
   });
 
-  // Maneja los cambios en los inputs
+  // Manejador genérico para todos los inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setFormData(prev => ({ ...prev, [name]: value }));
@@ -28,24 +28,29 @@ const Register = () => {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // 1. Validar contraseñas
+    // 1. Validación de contraseñas
     if (formData.password !== formData.confirmPassword) {
-        Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
+        Swal.fire({
+            title: 'Error',
+            text: 'Las contraseñas no coinciden',
+            icon: 'error',
+            confirmButtonColor: '#d33'
+        });
         return;
     }
 
-    // 2. Crear objeto de usuario (Compatible con tu interfaz User)
+    // 2. Crear objeto de usuario con los datos extras
     const newUser: User = {
-        id: Date.now().toString(), // Generamos ID único simple
+        id: Date.now().toString(), // ID único basado en fecha
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        role: 'client' // Por defecto todos los registros son clientes
-        // Nota: RUT y Teléfono no están en tu interfaz User básica, 
-        // pero se guardarán en localStorage aunque TypeScript no los valide estrictamente aquí.
+        role: 'client',         // Rol por defecto
+        rut: formData.rut,      // Guardamos RUT
+        phone: formData.phone   // Guardamos Teléfono
     };
 
-    // 3. Intentar registrar en el Contexto
+    // 3. Intentar registrar (el contexto verifica si el email ya existe)
     const success = register(newUser);
 
     if (success) {
@@ -88,6 +93,7 @@ const Register = () => {
 
             <form onSubmit={handleRegister}>
                 <div className="row g-3">
+                    {/* Nombre */}
                     <div className="col-md-6">
                         <label className="form-label fw-bold small">Nombre Completo</label>
                         <input 
@@ -100,6 +106,8 @@ const Register = () => {
                             required 
                         />
                     </div>
+
+                    {/* RUT */}
                     <div className="col-md-6">
                         <label className="form-label fw-bold small">RUT</label>
                         <input 
@@ -112,6 +120,8 @@ const Register = () => {
                             required 
                         />
                     </div>
+
+                    {/* Email */}
                     <div className="col-12">
                         <label className="form-label fw-bold small">Correo Electrónico</label>
                         <input 
@@ -124,6 +134,8 @@ const Register = () => {
                             required 
                         />
                     </div>
+
+                    {/* Contraseñas */}
                     <div className="col-md-6">
                         <label className="form-label fw-bold small">Contraseña</label>
                         <input 
@@ -148,6 +160,8 @@ const Register = () => {
                             required 
                         />
                     </div>
+
+                    {/* Teléfono */}
                     <div className="col-12">
                         <label className="form-label fw-bold small">Teléfono</label>
                         <input 

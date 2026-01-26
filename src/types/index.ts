@@ -6,30 +6,32 @@ export interface Product {
     price: number;
     description: string;
     image: string;
-    category: string; // Nuevo campo obligatorio
-    stock: number;    // Nuevo campo obligatorio
+    category: string;
+    stock: number;
 }
 
 export interface CartItem extends Product {
     quantity: number;
 }
 
+// ACTUALIZADO: Agregamos rut y phone como opcionales (?)
 export interface User {
     id: string;
     name: string;
     email: string;
     password?: string;
-    role: 'admin' | 'client'; // Rol estricto
+    role: 'admin' | 'client'; 
+    rut?: string;    // Nuevo
+    phone?: string;  // Nuevo
 }
 
-// Definimos los estados posibles para evitar errores de texto
 export type OrderStatus = 'Pendiente' | 'En Camino' | 'Entregado';
 
 export interface Order {
     id: string;
     userId: string;
     customerName: string;
-    items: CartItem[]; // La orden guarda items con cantidad (CartItem), no solo Products
+    items: CartItem[];
     total: number;
     status: OrderStatus;
     address: string;
