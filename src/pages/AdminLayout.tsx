@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import Swal from 'sweetalert2'; // Importar
+import Swal from 'sweetalert2';
 
 const AdminLayout = () => {
   const { user, logout } = useContext(AuthContext);
@@ -10,7 +10,6 @@ const AdminLayout = () => {
   const location = useLocation();
 
   const handleLogout = () => {
-    // Alerta de confirmación opcional o despedida directa
     Swal.fire({
       title: '¿Cerrar sesión?',
       text: "Saldrás del panel de administración",
@@ -53,6 +52,12 @@ const AdminLayout = () => {
             <Link to="/admin" className={`nav-link ${isActive('/admin')}`}>
                 📊 Resumen General
             </Link>
+
+            {/* --- NUEVO ENLACE A PEDIDOS --- */}
+            <Link to="/admin/pedidos" className={`nav-link ${isActive('/admin/pedidos')}`}>
+                📝 Pedidos
+            </Link>
+
             <Link to="/admin/stock" className={`nav-link ${isActive('/admin/stock')}`}>
                 📦 Gestión de Stock
             </Link>
@@ -70,7 +75,7 @@ const AdminLayout = () => {
             </Link>
 
             <button 
-              onClick={handleLogout} // Conectado a la alerta
+              onClick={handleLogout}
               className="btn btn-outline-danger w-100"
             >
               Cerrar Sesión
@@ -78,6 +83,7 @@ const AdminLayout = () => {
         </div>
       </aside>
 
+      {/* Contenido Principal */}
       <main className="flex-grow-1 p-4" style={{ marginLeft: '280px' }}>
         <Outlet />
       </main>

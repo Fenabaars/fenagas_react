@@ -14,26 +14,29 @@ export interface CartItem extends Product {
     quantity: number;
 }
 
-// ACTUALIZADO: Agregamos rut y phone como opcionales (?)
 export interface User {
     id: string;
     name: string;
     email: string;
     password?: string;
     role: 'admin' | 'client'; 
-    rut?: string;    // Nuevo
-    phone?: string;  // Nuevo
+    rut?: string;
+    phone?: string;
 }
 
-export type OrderStatus = 'Pendiente' | 'En Camino' | 'Entregado';
+export type OrderStatus = 'Pendiente' | 'En Camino' | 'Entregado' | 'Cancelado';
 
+// ACTUALIZADO: Agregamos phone y commune
 export interface Order {
     id: string;
-    userId: string;
+    userId: string; // Si es invitado será "guest"
     customerName: string;
     items: CartItem[];
     total: number;
     status: OrderStatus;
     address: string;
+    commune: string; // Nuevo
+    phone: string;   // Nuevo
     date: string;
+    paymentMethod: string; // Nuevo (para saber si paga con efectivo o tarjeta)
 }
