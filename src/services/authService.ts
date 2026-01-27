@@ -2,7 +2,6 @@
 import type { User } from '../types';
 import { initialUsers } from '../data/seed';
 
-// Definimos las claves de almacenamiento como constantes para evitar errores de dedo
 const STORAGE_KEYS = {
     USER: 'fenagas_user',
     REGISTERED_USERS: 'fenagas_registered_users'
@@ -10,17 +9,15 @@ const STORAGE_KEYS = {
 
 class AuthService {
     
-    // 1. Obtener todos los usuarios (Seed + Registrados)
+    // 1. Obtener todos los usuarios
     private getAllUsers(): User[] {
         const storedUsers: User[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.REGISTERED_USERS) || '[]');
         
-        // Combinamos listas (dando prioridad a los editados en localStorage si el ID coincide)
         const mergedUsers = [...initialUsers.map(seedUser => {
             const editedUser = storedUsers.find(u => u.id === seedUser.id || u.email === seedUser.email);
             return editedUser || seedUser;
         })];
 
-        // Agregamos los nuevos que no estaban en el seed
         storedUsers.forEach(storedUser => {
             if (!mergedUsers.some(u => u.id === storedUser.id)) {
                 mergedUsers.push(storedUser);
@@ -42,16 +39,29 @@ class AuthService {
         return null;
     }
 
-    // 3. Lógica de Registro
+    // 3. Lógica de Registro (¡ACTUALIZADA!)
     register(newUser: User): boolean {
         const users = this.getAllUsers();
         
-        // Verificar si el email ya existe
+        // A) Verificar si el EMAIL ya existe
         if (users.some(u => u.email === newUser.email)) {
-            return false; // El usuario ya existe
+            console.warn('Error de registro: El email ya existe.');
+            return false; 
         }
 
-        // Guardar en la lista de registrados
+        // B) Verificar si el RUT ya existe (si el usuario ingresó uno)
+        if (newUser.rut && users.some(u => u.rut === newUser.rut)) {
+            console.warn('Error de registro: El RUT ya está registrado.');
+            return false;
+        }
+
+        // C) Verificar si el TELÉFONO ya existe (si el usuario ingresó uno)
+        if (newUser.phone && users.some(u => u.phone === newUser.phone)) {
+            console.warn('Error de registro: El teléfono ya está registrado.');
+            return false;
+        }
+
+        // Si pasa todas las validaciones, guardamos
         const registeredUsers: User[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.REGISTERED_USERS) || '[]');
         registeredUsers.push(newUser);
         localStorage.setItem(STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers));
@@ -62,18 +72,14 @@ class AuthService {
     // 4. Lógica de Actualizar Perfil
     updateProfile(currentUser: User, updatedData: Partial<User>): User {
         const newUser = { ...currentUser, ...updatedData };
-        
-        // Actualizar sesión actual
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
 
-        // Actualizar base de datos de usuarios
         const registeredUsers: User[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.REGISTERED_USERS) || '[]');
         const userIndex = registeredUsers.findIndex(u => u.id === currentUser.id);
 
         if (userIndex !== -1) {
             registeredUsers[userIndex] = { ...registeredUsers[userIndex], ...updatedData };
         } else {
-            // Si era un usuario seed original, ahora pasa a ser un usuario registrado/editado
             registeredUsers.push(newUser);
         }
         
@@ -86,12 +92,11 @@ class AuthService {
         localStorage.removeItem(STORAGE_KEYS.USER);
     }
 
-    // 6. Obtener usuario actual (al recargar la página)
+    // 6. Obtener usuario actual
     getCurrentUser(): User | null {
         const stored = localStorage.getItem(STORAGE_KEYS.USER);
         return stored ? JSON.parse(stored) : null;
     }
 }
 
-// Exportamos una instancia única (Singleton)
 export const authService = new AuthService();
